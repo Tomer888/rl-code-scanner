@@ -1,8 +1,20 @@
 import re
 
-# Pattern A: Hyphenated alphanumeric codes (uppercase only to avoid URL/version false positives)
+# Pattern A: Hyphenated alphanumeric codes
+# Rules to reduce false positives:
+#   - Each segment must contain at least one letter (filters out pure-number dates like 2018-2020)
+#   - Segments are 3-8 chars, uppercase letters + digits only
 PATTERN_HYPHENATED = re.compile(
-    r'\b([A-Z0-9]{3,8}(?:-[A-Z0-9]{3,8}){1,4})\b'
+    r'\b((?=[A-Z0-9]*[A-Z][A-Z0-9]*)[A-Z0-9]{3,8}(?:-(?=[A-Z0-9]*[A-Z][A-Z0-9]*)[A-Z0-9]{3,8}){1,4})\b'
+)
+
+# Blocklist: patterns that look like codes but are always false positives
+BLOCKLIST = re.compile(
+    r'^\d{4}-\d{4}$'          # pure year ranges like 2018-2020
+    r'|^\d{4}-\d{2}-\d{2}$'   # dates like 2024-01-15
+    r'|^V\d+\.\d'              # version strings like V1.2
+    r'|^[A-Z]{1,2}\d+$',      # short codes like S1, EP3
+    re.IGNORECASE
 )
 
 # Pattern B: Known dictionary-style codes used in past Rocket League promotions
@@ -71,6 +83,8 @@ def extract_codes(title: str, body: str) -> dict:
 
     for match in PATTERN_HYPHENATED.finditer(combined):
         code = match.group(1).upper()
+        if BLOCKLIST.match(code):
+            continue
         if has_context(combined, match.start(), match.end()):
             desc = extract_description(combined, match.start(), match.end())
             found[code] = found.get(code) or desc
