@@ -15,10 +15,13 @@ PATTERN_WORD_CODE = re.compile(
 )
 
 # Context keywords: a code must appear near these to be considered a real promo code
+# Covers both Rocket League and Fortnite
 CONTEXT_KEYWORDS = re.compile(
     r'redeem|promo\s*code|free\s*code|code\s*drop|use\s*code|enter\s*code|'
     r'reward|decal|boost|antenna|topper|banner|title|cosmetic|rlcs|psyonix|'
-    r'epic\s*games|in-?game|limited.time|exclusive|giveaway',
+    r'epic\s*games|in-?game|limited.time|exclusive|giveaway|'
+    r'fortnite|v-?bucks|vbucks|skin|emote|pickaxe|glider|outfit|locker|'
+    r'battle\s*pass|fnbr|chapter|season\s*\d',
     re.IGNORECASE
 )
 

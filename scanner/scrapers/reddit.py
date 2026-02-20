@@ -6,6 +6,8 @@ from scanner.detector import extract_codes
 SUBREDDITS = [
     "RocketLeague",
     "RocketLeagueEsports",
+    "FortNiteBR",
+    "FortniteCompetitive",
 ]
 
 # RSS feeds are not blocked like the JSON API

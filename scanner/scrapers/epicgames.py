@@ -2,19 +2,33 @@ import requests
 from bs4 import BeautifulSoup
 from scanner.detector import extract_codes
 
-# Sites that track active Rocket League codes and update regularly
+# Sites that track active Rocket League and Fortnite codes and update regularly
 SOURCES = [
+    # Rocket League
     {
         "name": "rocket-league.com",
         "url": "https://rocket-league.com/free-codes",
     },
     {
-        "name": "pockettactics.com",
+        "name": "pockettactics.com (RL)",
         "url": "https://www.pockettactics.com/rocket-league/codes",
     },
     {
-        "name": "mrguider.org",
+        "name": "mrguider.org (RL)",
         "url": "https://www.mrguider.org/roblox/rocket-league-codes/",
+    },
+    # Fortnite
+    {
+        "name": "pockettactics.com (Fortnite)",
+        "url": "https://www.pockettactics.com/fortnite/codes",
+    },
+    {
+        "name": "game8.co (Fortnite)",
+        "url": "https://game8.co/games/Fortnite/archives/486504",
+    },
+    {
+        "name": "earlygame.com (Fortnite)",
+        "url": "https://earlygame.com/codes/fortnite-codes",
     },
 ]
 
