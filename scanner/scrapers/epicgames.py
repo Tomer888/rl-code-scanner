@@ -2,34 +2,15 @@ import requests
 from bs4 import BeautifulSoup
 from scanner.detector import extract_codes
 
-# Sites that track active Rocket League and Fortnite codes and update regularly
 SOURCES = [
     # Rocket League
-    {
-        "name": "rocket-league.com",
-        "url": "https://rocket-league.com/free-codes",
-    },
-    {
-        "name": "pockettactics.com (RL)",
-        "url": "https://www.pockettactics.com/rocket-league/codes",
-    },
-    {
-        "name": "mrguider.org (RL)",
-        "url": "https://www.mrguider.org/roblox/rocket-league-codes/",
-    },
+    {"name": "rocket-league.com",        "url": "https://rocket-league.com/free-codes",                        "game": "Rocket League"},
+    {"name": "pockettactics.com (RL)",    "url": "https://www.pockettactics.com/rocket-league/codes",           "game": "Rocket League"},
+    {"name": "mrguider.org (RL)",         "url": "https://www.mrguider.org/roblox/rocket-league-codes/",        "game": "Rocket League"},
     # Fortnite
-    {
-        "name": "pockettactics.com (Fortnite)",
-        "url": "https://www.pockettactics.com/fortnite/codes",
-    },
-    {
-        "name": "game8.co (Fortnite)",
-        "url": "https://game8.co/games/Fortnite/archives/486504",
-    },
-    {
-        "name": "earlygame.com (Fortnite)",
-        "url": "https://earlygame.com/codes/fortnite-codes",
-    },
+    {"name": "pockettactics.com (FN)",    "url": "https://www.pockettactics.com/fortnite/codes",                "game": "Fortnite"},
+    {"name": "game8.co (FN)",             "url": "https://game8.co/games/Fortnite/archives/486504",             "game": "Fortnite"},
+    {"name": "earlygame.com (FN)",        "url": "https://earlygame.com/codes/fortnite-codes",                  "game": "Fortnite"},
 ]
 
 HEADERS = {
@@ -37,9 +18,11 @@ HEADERS = {
 }
 
 
-def scrape_epicgames() -> set:
-    """Scrape community code-tracking sites for active Rocket League codes."""
-    all_codes = set()
+def scrape_epicgames() -> dict:
+    """
+    Returns: {code: {"game": str, "description": str}}
+    """
+    all_codes = {}
 
     for source in SOURCES:
         try:
@@ -51,7 +34,9 @@ def scrape_epicgames() -> set:
             soup = BeautifulSoup(resp.text, "lxml")
             text = soup.get_text(separator=" ")
             codes = extract_codes(text, "")
-            all_codes.update(codes)
+            for code, desc in codes.items():
+                if code not in all_codes:
+                    all_codes[code] = {"game": source["game"], "description": desc}
             print(f"[sites] {source['name']}: found {len(codes)} candidate code(s).")
 
         except requests.RequestException as e:
