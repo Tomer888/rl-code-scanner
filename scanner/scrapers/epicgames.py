@@ -7,10 +7,8 @@ SOURCES = [
     {"name": "rocket-league.com",        "url": "https://rocket-league.com/free-codes",                        "game": "Rocket League"},
     {"name": "pockettactics.com (RL)",    "url": "https://www.pockettactics.com/rocket-league/codes",           "game": "Rocket League"},
     {"name": "mrguider.org (RL)",         "url": "https://www.mrguider.org/roblox/rocket-league-codes/",        "game": "Rocket League"},
-    # Fortnite
+    # Fortnite — only pockettactics which has clean, curated lists
     {"name": "pockettactics.com (FN)",    "url": "https://www.pockettactics.com/fortnite/codes",                "game": "Fortnite"},
-    {"name": "game8.co (FN)",             "url": "https://game8.co/games/Fortnite/archives/486504",             "game": "Fortnite"},
-    {"name": "earlygame.com (FN)",        "url": "https://earlygame.com/codes/fortnite-codes",                  "game": "Fortnite"},
 ]
 
 HEADERS = {

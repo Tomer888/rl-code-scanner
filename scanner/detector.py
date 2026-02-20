@@ -2,18 +2,20 @@ import re
 
 # Pattern A: Hyphenated alphanumeric codes
 # Rules to reduce false positives:
-#   - Each segment must contain at least one letter (filters out pure-number dates like 2018-2020)
+#   - Each segment must contain at least 2 letters (filters dates, pure-number segments)
 #   - Segments are 3-8 chars, uppercase letters + digits only
+#   - At least 2 segments (single word codes handled by PATTERN_WORD_CODE)
 PATTERN_HYPHENATED = re.compile(
-    r'\b((?=[A-Z0-9]*[A-Z][A-Z0-9]*)[A-Z0-9]{3,8}(?:-(?=[A-Z0-9]*[A-Z][A-Z0-9]*)[A-Z0-9]{3,8}){1,4})\b'
+    r'\b((?=[A-Z0-9]*[A-Z][A-Z0-9]*[A-Z][A-Z0-9]*)[A-Z0-9]{3,8}(?:-(?=[A-Z0-9]*[A-Z][A-Z0-9]*[A-Z][A-Z0-9]*)[A-Z0-9]{3,8}){1,4})\b'
 )
 
 # Blocklist: patterns that look like codes but are always false positives
 BLOCKLIST = re.compile(
-    r'^\d{4}-\d{4}$'          # pure year ranges like 2018-2020
-    r'|^\d{4}-\d{2}-\d{2}$'   # dates like 2024-01-15
-    r'|^V\d+\.\d'              # version strings like V1.2
-    r'|^[A-Z]{1,2}\d+$',      # short codes like S1, EP3
+    r'^\d{4}-\d{4}$'           # pure year ranges like 2018-2020
+    r'|^\d{4}-\d{2}-\d{2}$'    # dates like 2024-01-15
+    r'|^V\d+\.\d'               # version strings like V1.2
+    r'|^[A-Z]{1,2}\d+$'        # short codes like S1, EP3
+    r'|^[A-Z]{4}-[A-Z]{4}$',   # pure letter pairs like ABCD-EFGH (often UI labels)
     re.IGNORECASE
 )
 
